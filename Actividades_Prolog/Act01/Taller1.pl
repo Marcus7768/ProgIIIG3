@@ -101,9 +101,9 @@ primo(X, Y):-
 
 % ----------- hechos del enunciado entregados ------------------------
 
-hostil(koreaDelSur).
-esEstadoUnidense(coronelWest).
-vendioArmasA(coronelWest, koreaDelSur).
+hostil(koreadelsur).
+esEstadoUnidense(coronelwest).
+vendioArmasA(coronelwest, koreadelsur).
 
 criminal(X, Y):-
-    esEstadoUnidense(X), vendioArmasA(X, Y), hostil(Y).
+    hostil(Y), esEstadoUnidense(X), vendioArmasA(X, Y).
