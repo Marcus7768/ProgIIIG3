@@ -1,4 +1,5 @@
-%1)---Hechos para la definición de personas en los Simpson y sus relaciones familiares ---
+# 1)
+%--------------- hechos para la definición de personas en los Simpson y sus relaciones familiares ---------
 
 hombre(bart).
 hombre(homero).
@@ -52,7 +53,7 @@ hijo(patty, clancy).
 hijo(selma, clancy).
 hijo(selma, jacqueline).
 
-% --- Reglas de las relaciones familiares de mayor orden ---
+% -------------- reglas de las relaciones familiares de mayor orden -------------
 
 
 abueloPaterno(X, Y):- 
@@ -94,11 +95,11 @@ primo(X, Y):-
     hombre(X), primos(X, Y).
     
 
-%---------------------------------------------------------------------------------------------
 
 
+# 2) ----------------------------------------------------------------------------------------------
 
-%2) ---Hechos del enunciado entregados:
+% ----------- hechos del enunciado entregados ------------------------
 
 hostil(coreaDelSur).
 esEstadoUnidense(coronelWest).
