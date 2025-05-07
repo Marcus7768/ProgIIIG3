@@ -60,7 +60,22 @@ def defRowsConstraints(IdCols,Dom):
 
 # print(defRowsConstraints(Idcols,Dom))
 
-Constraints=defColsConstraints(Idcols,Dom) + defRowsConstraints(Idcols,Dom)
+def def3x3Constraints(IdCols, Dom):
+    Constraints = []
+    
+    row_blocks = [IdCols[i:i+3] for i in range(0, 9, 3)]  # [['A','B','C'], ['D','E','F'], ['G','H','I']]
+    col_blocks = [list(range(i, i+3)) for i in range(1, 10, 3)]  # [[1,2,3], [4,5,6], [7,8,9]]
+
+    for rows in row_blocks:
+        for cols in col_blocks:
+            block = [f"{r}{c}" for r in rows for c in cols]
+            Constraints.append(block)
+
+    return Constraints
+
+# print(def3x3Constraints(Idcols,Dom))
+
+Constraints=defColsConstraints(Idcols,Dom) + defRowsConstraints(Idcols,Dom) + def3x3Constraints(Idcols,Dom)
 
 # print(Constraints)
 
