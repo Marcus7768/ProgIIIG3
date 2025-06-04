@@ -24,8 +24,8 @@ VarDoms={key:Dom.copy() for key in strVarkeys}
 
 
 # tablero="ProgIIIG1-Act08-KK5GGRJS-Board.txt"
-tablero="ProgIIIG1-Act08-KK5DDPQF-Board.txt"
-# tablero="KK5GGRJS-MD.txt"
+# tablero="ProgIIIG1-Act08-KK5DDPQF-Board.txt"
+tablero="ProgIIIG1-Act08-KK5VMPMA-Board.txt"
 
 
 with open(tablero,"r") as archivo:
