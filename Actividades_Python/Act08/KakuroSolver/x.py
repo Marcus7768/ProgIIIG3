@@ -23,9 +23,9 @@ VarDoms={key:Dom.copy() for key in strVarkeys}
 # tableros disponibles, se debe comentar todos menos el que se desea utilizar
 
 
-# tablero="ProgIIIG1-Act08-KK5GGRJS-Board.txt"
+tablero="ProgIIIG1-Act08-KK5GGRJS-Board.txt"
 # tablero="ProgIIIG1-Act08-KK5DDPQF-Board.txt"
-tablero="ProgIIIG1-Act08-KK5VMPMA-Board.txt"
+# tablero="ProgIIIG1-Act08-KK5VMPMA-Board.txt"
 
 
 with open(tablero,"r") as archivo:
@@ -125,7 +125,6 @@ def defRowsConstraints(VarDoms, IdCols):
                         pass
             bloque = []
     return constraints
-
 
 Constraints = defColsConstraints(VarDoms, Idcols) + defRowsConstraints(VarDoms, Idcols)
 # print(Constraints)
@@ -236,9 +235,9 @@ while anyChange:
     anyChange = False
     mostrar_tablero(VarDoms)
     print("\n")
-    # for constraint in Constraints:
-    #     if ConsistenceKakuro([constraint], VarDoms):
-    #         anyChange = True
+    for constraint in Constraints:
+        if ConsistenceKakuro([constraint], VarDoms):
+            anyChange = True
 
 print("Ahora aplicamos la busqueda\n")
 solution = backtracking(VarDoms, Constraints)
