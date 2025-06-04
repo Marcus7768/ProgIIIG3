@@ -24,6 +24,8 @@ VarDoms={key:Dom.copy() for key in strVarkeys}
 
 
 tablero="KK5GGRJS-MD.txt"
+# tablero="KK5GGRJS-MD.txt"
+# tablero="KK5GGRJS-MD.txt"
 
 
 with open(tablero,"r") as archivo:
@@ -35,67 +37,6 @@ with open(tablero,"r") as archivo:
             VarDoms[clave] = linea
 
 
-
-
-            # linea = {int(linea)}
-            # VarDoms[clave] = linea
-
-# print(VarDoms)
-# VarDoms["A2"].discard(5)
-
-# def defColsConstraints(IdCols,Dom):
-#     Constraints=[]
-#     for id in IdCols:
-#         ConstraintVars=[f"{id}{i}" for i in Dom]
-#         Constraints.append(ConstraintVars)
-#     return Constraints
-
-
-# def defColsConstraints(Vardoms,IdCols):
-#     Constraints = []
-    
-#     for i in range(1,10):
-#         for key in VarDoms:
-#             print(VarDoms[key])
-
-#     return Constraints
-
-# def defColsConstraints(VarDoms,IdCols,Dom):
-#     Constraints=[]
-
-#     for id in IdCols:
-#         ConstraintVars = []
-#         for i in Dom:
-#             cadena = f"{id}{i}"
-#             linea = str(VarDoms.get(cadena))
-#             if linea == "Negro" and linea.isalnum(): 
-#                 for j in Dom:
-#                     if j != i:
-                                 
-#             else:
-#                 ConstraintVars.append(cadena)
-#         Constraints.append(ConstraintVars)
-
-#     return Constraints
-
-# def defColsConstraints(VarDoms, IdCols):
-#     constraints = []
-#     for col in IdCols:
-#         bloque = []
-#         for row in range(1, 10):
-#             clave = f"{col}{row}"
-#             valor = VarDoms[clave]
-#             if isinstance(valor, set):  # blanca
-#                 bloque.append(clave)
-#             else:  # negra o sumador
-#                 if bloque:
-#                     constraints.append(bloque)
-#                     bloque = []
-#         if bloque:  # Si termina la columna con blancas
-#             constraints.append(bloque)
-#     return constraints
-
-# -----------------------------------------------------------------------------------------
 
 def defColsConstraints(VarDoms, IdCols):
     constraints = []
@@ -139,27 +80,7 @@ def defColsConstraints(VarDoms, IdCols):
             bloque = []
     return constraints
 
-# -----------------------------------------------------------------------------------------
 
-
-# def defRowsConstraints(VarDoms, IdCols):
-#     constraints = []
-#     for row in range(1, 10):  # Filas de 1 a 9
-#         bloque = []
-#         for col in IdCols:    # Columnas de A a I
-#             clave = f"{col}{row}"
-#             valor = VarDoms[clave]
-#             if isinstance(valor, set):  # Es celda blanca
-#                 bloque.append(clave)
-#             else:  # Celda negra o con sumador
-#                 if bloque:
-#                     constraints.append(bloque)
-#                     bloque = []
-#         if bloque:  # Si termina la fila con blancas
-#             constraints.append(bloque)
-#     return constraints
-
-# -----------------------------------------------------------------------------------------
 
 def defRowsConstraints(VarDoms, IdCols):
     constraints = []
@@ -206,41 +127,8 @@ def defRowsConstraints(VarDoms, IdCols):
     return constraints
 
 
-# -----------------------------------------------------------------------------------------
-
-
-
-
 Constraints = defColsConstraints(VarDoms, Idcols) + defRowsConstraints(VarDoms, Idcols)
-print(Constraints)
-
-# [[[b6, b7, b8], 19]   ...  []   []   []  []]
-
-# def ConsistenceDifference(Constraints,VarDoms):
-#     anyChange=False
-#     for constraint in Constraints:
-
-#         for var in constraint:
-#             if len(VarDoms[var])==1:
-#                 for othervar in constraint:
-#                     if othervar!=var:
-#                         oldDom = VarDoms[othervar].copy()
-#                         VarDoms[othervar].difference_update(VarDoms[var])
-#                         if(oldDom!=VarDoms[othervar]):
-#                             anyChange=True
-#     return anyChange
-
-
-
-# def Consistence(Constraints,Vardoms):
-#     anyChange = False
-
-#     for constraits in Constraints:
-#         for Var in constraits:
-
-
-
-#     return anyChange
+# print(Constraints)
 
 
 
@@ -278,6 +166,67 @@ def ConsistenceKakuro(Constraints, VarDoms):
 
     return anyChange
 
+def es_valido(var, valor, asignacion, Constraints):
+    # Crear una copia temporal de la asignación
+    temp_asignacion = asignacion.copy()
+    temp_asignacion[var] = valor
+
+    for constraint in Constraints:
+        vars_bloque, suma = constraint
+        valores = []
+        for v in vars_bloque:
+            if v in temp_asignacion:
+                valores.append(temp_asignacion[v])
+            else:
+                valores.append(None)
+        
+        asignados = [v for v in valores if v is not None]
+
+        # Verificar duplicados
+        if len(asignados) != len(set(asignados)):
+            return False
+
+        # Verificar suma si todas están asignadas
+        if None not in valores:
+            if sum(asignados) != suma:
+                return False
+
+        # Verificar que no sobrepasemos la suma parcial
+        if sum(asignados) > suma:
+            return False
+
+    return True
+
+def backtracking(VarDoms, Constraints):
+    def bt(asignacion):
+        if len(asignacion) == len([v for v in VarDoms if isinstance(VarDoms[v], set)]):
+            return asignacion  # ¡Todas las variables asignadas!
+
+        # Seleccionamos la siguiente variable no asignada
+        for var in VarDoms:
+            if isinstance(VarDoms[var], set) and var not in asignacion:
+                for valor in VarDoms[var]:
+                    if es_valido(var, valor, asignacion, Constraints):
+                        asignacion[var] = valor
+                        result = bt(asignacion)
+                        if result:
+                            return result
+                        del asignacion[var]  # backtrack
+                return None  # No hay valor válido para esta variable
+        return None  # No hay más variables
+
+    return bt({})
+
+def mostrar_tablero(VarDoms):
+    for i in range(1, 10):
+        fila = ""
+        for c in Idcols:
+            val = VarDoms[f"{c}{i}"]
+            fila += str(next(iter(val))) if len(val) == 1 else "."
+            fila += " "
+            if c in "CF": fila += "| "
+        print(fila)
+        if i in [3, 6]: print("-" * 21)
 
 anyChange = True
 iteration = 1
@@ -285,8 +234,20 @@ while anyChange:
     print(f"Iteracion#{iteration}")
     iteration += 1
     anyChange = False
-    print(VarDoms)
+    mostrar_tablero(VarDoms)
     print("\n")
     for constraint in Constraints:
         if ConsistenceKakuro([constraint], VarDoms):
             anyChange = True
+
+# print("Ahora aplicamos la busqueda\n")
+# solution = backtracking(VarDoms, Constraints)
+# if solution:
+#     for var in VarDoms:
+#         if isinstance(VarDoms[var], set) and var in solution:
+#             VarDoms[var] = {solution[var]}
+#     print("¡Solución encontrada!")
+# else:
+#     print("No se encontró solución.")
+
+mostrar_tablero(VarDoms)
