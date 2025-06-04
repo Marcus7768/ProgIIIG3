@@ -23,8 +23,8 @@ VarDoms={key:Dom.copy() for key in strVarkeys}
 # tableros disponibles, se debe comentar todos menos el que se desea utilizar
 
 
-tablero="ProgIIIG1-Act08-KK5GGRJS-Board.txt"
-# tablero="KK5GGRJS-MD.txt"
+# tablero="ProgIIIG1-Act08-KK5GGRJS-Board.txt"
+tablero="ProgIIIG1-Act08-KK5DDPQF-Board.txt"
 # tablero="KK5GGRJS-MD.txt"
 
 
@@ -236,18 +236,18 @@ while anyChange:
     anyChange = False
     mostrar_tablero(VarDoms)
     print("\n")
-    for constraint in Constraints:
-        if ConsistenceKakuro([constraint], VarDoms):
-            anyChange = True
+    # for constraint in Constraints:
+    #     if ConsistenceKakuro([constraint], VarDoms):
+    #         anyChange = True
 
-# print("Ahora aplicamos la busqueda\n")
-# solution = backtracking(VarDoms, Constraints)
-# if solution:
-#     for var in VarDoms:
-#         if isinstance(VarDoms[var], set) and var in solution:
-#             VarDoms[var] = {solution[var]}
-#     print("¡Solución encontrada!")
-# else:
-#     print("No se encontró solución.")
+print("Ahora aplicamos la busqueda\n")
+solution = backtracking(VarDoms, Constraints)
+if solution:
+    for var in VarDoms:
+        if isinstance(VarDoms[var], set) and var in solution:
+            VarDoms[var] = {solution[var]}
+    print("¡Solución encontrada!")
+else:
+    print("No se encontró solución.")
 
 mostrar_tablero(VarDoms)
