@@ -23,7 +23,7 @@ VarDoms={key:Dom.copy() for key in strVarkeys}
 # tableros disponibles, se debe comentar todos menos el que se desea utilizar
 
 
-tablero="KK5GGRJS-MD.txt"
+tablero="ProgIIIG1-Act08-KK5GGRJS-Board.txt"
 # tablero="KK5GGRJS-MD.txt"
 # tablero="KK5GGRJS-MD.txt"
 
